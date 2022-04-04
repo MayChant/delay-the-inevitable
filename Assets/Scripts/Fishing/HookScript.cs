@@ -5,8 +5,10 @@ using UnityEngine;
 public class HookScript : MonoBehaviour
 {
     public IdeaFishScript caughtFish;
+    private AudioSource audioSource;
 
     private void Catch(IdeaFishScript ideaFishScript) {
+        audioSource.Play();
         ideaFishScript.isCaught = true;
         ideaFishScript.transform.parent = transform;
         ideaFishScript.transform.localPosition = Vector2.zero;
@@ -16,7 +18,7 @@ public class HookScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

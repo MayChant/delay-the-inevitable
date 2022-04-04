@@ -49,7 +49,7 @@ MonoBehaviour:
   ideaName: Villainous Moment
   baseSpeed: 2
   oscillationAmount: 0.3
-  oscillationFrequency: 1
+  oscillationFrequency: 2
   direction: 0
   minPoints: 30
   maxPoints: 50

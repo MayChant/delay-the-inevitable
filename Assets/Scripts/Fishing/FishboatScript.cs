@@ -9,28 +9,34 @@ public class FishboatScript : MonoBehaviour
     public LineRenderer fishingLine;
     public bool isCastingLine;
 
-    public Vector2 hookInitialPosition;
+    public Vector2 boatInitialPosition;
+    public Vector2 hookInitialLocalPosition;
     public float maxCastDistance;
     public float castSpeed;
     public float movementSpeed;
     public float boatWobbleSpeed;
     public Vector3 rotationDirection;
     public ChoiceUIScript choiceUIScript;
+    public GameObject summaryUI;
+    public GameObject introUI;
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         rotationDirection = Vector3.back;
+        audioSource = GetComponent<AudioSource>();
+        hookInitialLocalPosition = hook.transform.localPosition;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (choiceUIScript.gameObject.activeInHierarchy) {
+        if (choiceUIScript.gameObject.activeInHierarchy || summaryUI.activeInHierarchy || introUI.activeInHierarchy) {
             // no input recorded when ui is on
             return;
         }
         // only allow casting when not casting
-        if (!isCastingLine && Input.GetKeyDown(KeyCode.DownArrow)) {
+        if (!isCastingLine && (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))) {
             StartCoroutine(CastLine());
         }
         if (!isCastingLine) {
@@ -49,10 +55,15 @@ public class FishboatScript : MonoBehaviour
     }
 
     IEnumerator CastLine() {
+        audioSource.Play();
         isCastingLine = true;
-        hookInitialPosition = hook.transform.position;
+        boatInitialPosition = transform.position;
+        Vector2 hookInitialPosition = boatInitialPosition + hookInitialLocalPosition;
         fishingLine.enabled = true;
-        fishingLine.SetPositions(new Vector3[] {hookInitialPosition, hookInitialPosition});
+        fishingLine.SetPositions(new Vector3[] {
+            hookInitialPosition,
+            hookInitialPosition
+        });
         while (((Vector2) hook.transform.position - hookInitialPosition).magnitude < maxCastDistance && !hook.caughtFish) {
             hook.transform.Translate(Vector2.down * castSpeed * Time.deltaTime);
             fishingLine.SetPosition(1, hook.transform.position);
