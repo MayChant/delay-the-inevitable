@@ -69,7 +69,7 @@ public class FishboatScript : MonoBehaviour
             fishingLine.SetPosition(1, hook.transform.position);
             yield return null;
         }
-        while ((hookInitialPosition - (Vector2) hook.transform.position).magnitude > 0.025) {
+        while (hookInitialPosition.y - hook.transform.position.y > 0.025) {
             hook.transform.Translate((hookInitialPosition - (Vector2) hook.transform.position).normalized * castSpeed * Time.deltaTime);
             fishingLine.SetPosition(1, hook.transform.position);
             yield return null;

@@ -52,10 +52,10 @@ public class GameManager : MonoBehaviour
         episodeSummaryPanel.SetActive(false);
         choiceUIPanel.numberUsedThisWeek = new Dictionary<string, int>();
         weekNumber++;
-        if (weekNumber % 5 == 0) {
+        if (weekNumber % 3 == 0) {
             // Every five weeks, reader expectation rises a little.
-            maxAppeal += 100;
-            passableAppeal += 80;
+            maxAppeal += 80;
+            passableAppeal += 50;
         }
         weekNumberDisplay.text = weekNumber.ToString();
         appeal = 0;
@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void FinishWeek() {
+        choiceUIPanel.notEnoughTimeText.alpha = 0f;
         choiceUIPanel.gameObject.SetActive(false);
         weekInProgress = false;
         
@@ -147,14 +148,14 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
-        if ((weekNumber + 1) % 5 == 0f) {
+        if ((weekNumber + 1) % 3 == 0f) {
             comment += " Our readers' expectation has grown higher. Please try to put in more effort next week.";
         }
         return comment;
     }
 
     public void InitializeGame() {
-        weekNumber = 20;
+        weekNumber = 0;
         fishNameToFishPrefab = new Dictionary<string, GameObject>();
         fishNameLottery = new List<string>();
         foreach (GameObject fishPrefab in fishPrefabs) {

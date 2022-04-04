@@ -20,6 +20,7 @@ public class ChoiceUIScript : MonoBehaviour
     public GameObject nextButton;
     public GameObject noFishGroup;
     public GameObject yesFishGroup;
+    private AudioSource audioSource;
 
     public void Prev() {
         int index = currentFishIndex - 1;
@@ -85,6 +86,9 @@ public class ChoiceUIScript : MonoBehaviour
         GameManager gameManager = GameManager.GetInstance();
         int appeal = gameManager.appeal + value;
         gameManager.appeal = Mathf.Min(appeal, gameManager.maxAppeal);
+        if (gameManager.appeal >= gameManager.passableAppeal) {
+            audioSource.Play();
+        }
         gameManager.timePassed += fish.timeConsumption;
     }
 
@@ -126,7 +130,7 @@ public class ChoiceUIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
